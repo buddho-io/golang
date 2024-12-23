@@ -1,0 +1,15 @@
+dist/
+build/
+build-debug/
+.DS_Store
+.idea
+vendor
+.vscode
+.makerc
+bin/
+.vimrc
+go.work
+go.work.sum
+
+**/LICENSE
+!/LICENSE
