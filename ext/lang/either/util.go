@@ -15,7 +15,7 @@
 package either
 
 import (
-	"github.com/llinder/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang"
 )
 
 // Map is a right biased map that applies the given function to the right value of the Either instance.
@@ -63,6 +63,7 @@ func ForEach[L, R any](e lang.Either[L, R], f func(R)) {
 	}
 }
 
+// Flatten returns the right value of the Either instance if it is right. Otherwise, it returns the right value of the inner Either instance.
 func Flatten[L, R any](e lang.Either[L, lang.Either[L, R]]) lang.Either[L, R] {
 	if e.IsLeft() {
 		return Left[L, R](e.Left())
@@ -79,6 +80,7 @@ func FromOption[L, R any](o lang.Option[R], l L) lang.Either[L, R] {
 	return Right[L, R](o.Get())
 }
 
+// OrElse returns the given Either if it is right. Otherwise, it returns the result of the given function.
 func OrElse[L, R any](e lang.Either[L, R], f func() lang.Either[L, R]) lang.Either[L, R] {
 	if e.IsRight() {
 		return e
@@ -86,8 +88,10 @@ func OrElse[L, R any](e lang.Either[L, R], f func() lang.Either[L, R]) lang.Eith
 	return f()
 }
 
+// Sequence returns an Either instance with the right value as a slice of the right values of the given Either instances.
+// If any of the given Either instances is left, the left value is returned.
 func Sequence[L, R any](es []lang.Either[L, R]) lang.Either[L, []R] {
-	var values []R
+	values := make([]R, 0, len(es))
 	for _, e := range es {
 		if e.IsLeft() {
 			return Left[L, []R](e.Left())

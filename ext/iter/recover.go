@@ -17,7 +17,7 @@ package iter
 import (
 	"iter"
 
-	"github.com/llinder/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang"
 )
 
 // Predicate is a function that returns true if the given value satisfies a condition.

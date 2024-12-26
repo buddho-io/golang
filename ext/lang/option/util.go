@@ -15,10 +15,7 @@
 package option
 
 import (
-	"iter"
-	"slices"
-
-	"github.com/llinder/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang"
 )
 
 func Map[A, B any](o lang.Option[A], f func(A) B) lang.Option[B] {
@@ -74,14 +71,13 @@ func OrElse[A any](o lang.Option[A], f func() lang.Option[A]) lang.Option[A] {
 
 // Sequence merges a list of Option instances into a single Option instance. If any of the Option instances is empty,
 // an empty Option is returned. Otherwise, an Option with the list of values is returned.
-func Sequence[A any](os iter.Seq[lang.Option[A]]) lang.Option[iter.Seq[A]] {
-	var values []A
-	for o := range os {
+func Sequence[A any](os []lang.Option[A]) lang.Option[[]A] {
+	values := make([]A, 0, len(os))
+	for _, o := range os {
 		if o.IsEmpty() {
-			return None[iter.Seq[A]]()
+			return None[[]A]()
 		}
 		values = append(values, o.Get())
 	}
-
-	return Some[iter.Seq[A]](slices.Values(values))
+	return Some(values)
 }

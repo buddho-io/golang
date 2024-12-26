@@ -35,7 +35,7 @@ func TestFilter(t *testing.T) {
 
 func TestFilter2(t *testing.T) {
 	v := map[int]string{1: "one", 2: "two", 3: "three", 4: "four", 5: "five"}
-	m := Filter2(maps.All(v), func(k int, v string) bool { return k%2 == 0 })
+	m := Filter2(maps.All(v), func(k int, _ string) bool { return k%2 == 0 })
 
 	got := maps.Collect(m)
 

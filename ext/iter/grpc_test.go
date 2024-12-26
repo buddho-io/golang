@@ -19,10 +19,9 @@ import (
 	"slices"
 	"testing"
 
+	"github.com/buddho-io/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang/either"
 	"github.com/stretchr/testify/require"
-
-	"github.com/llinder/golang/ext/lang"
-	"github.com/llinder/golang/ext/lang/either"
 )
 
 func TestStream(t *testing.T) {

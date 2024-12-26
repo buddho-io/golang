@@ -15,7 +15,7 @@
 package tuple
 
 import (
-	"github.com/llinder/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang"
 )
 
 // tuple2 implements lang.Tuple2.

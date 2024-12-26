@@ -20,10 +20,9 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/buddho-io/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang/tuple"
 	"github.com/stretchr/testify/require"
-
-	"github.com/llinder/golang/ext/lang"
-	"github.com/llinder/golang/ext/lang/tuple"
 )
 
 func TestDeferred(t *testing.T) {

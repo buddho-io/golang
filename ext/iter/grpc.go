@@ -19,8 +19,8 @@ import (
 	"io"
 	"iter"
 
-	"github.com/llinder/golang/ext/lang"
-	"github.com/llinder/golang/ext/lang/either"
+	"github.com/buddho-io/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang/either"
 )
 
 // Stream converts a StreamLike into an iter.Seq that can be used with the iter package.

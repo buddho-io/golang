@@ -15,7 +15,7 @@
 package either
 
 import (
-	"github.com/llinder/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang"
 )
 
 // left is an implementation of Either that represents the left value.

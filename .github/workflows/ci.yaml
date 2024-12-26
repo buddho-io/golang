@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  GOPROXY: https://proxy.golang.org
+  GOPRIVATE: github.com/buddho-io/*
+  GOWORK: off
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            code:
+              - '!docs/**'
+              - '!**/*.md'
+          predicate-quantifier: every  # Make the filters be AND-ed
+          token: "" # don't use github api
+    outputs:
+      code: ${{ steps.changes.outputs.code }}
+
+  check:
+    needs: [ changes ]
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5.0.1
+        with:
+          go-version-file: ext/go.mod
+          cache-dependency-path: "**/*.sum"
+      - name: "Run Pre-build Checks"
+        run: make check
+
+  test:
+    needs: [ changes ]
+    if: ${{ needs.changes.outputs.code == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5.0.1
+        with:
+          go-version-file: ext/go.mod
+          cache-dependency-path: "**/*.sum"
+      - name: "Run Tests"
+        run: make test

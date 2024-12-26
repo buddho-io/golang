@@ -18,10 +18,9 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/buddho-io/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang/option"
 	"github.com/stretchr/testify/require"
-
-	"github.com/llinder/golang/ext/lang"
-	"github.com/llinder/golang/ext/lang/option"
 )
 
 func TestMap(t *testing.T) {
@@ -40,7 +39,7 @@ func TestMapLeft(t *testing.T) {
 	r := Right[error, int](42)
 	l := Left[error, int](error(nil))
 
-	f := func(a error) error {
+	f := func(_ error) error {
 		return errors.New("error")
 	}
 
@@ -64,7 +63,7 @@ func TestFlatMapLeft(t *testing.T) {
 	r := Right[error, int](42)
 	l := Left[error, int](error(nil))
 
-	f := func(a error) lang.Either[error, int] {
+	f := func(_ error) lang.Either[error, int] {
 		return Left[error, int](errors.New("error"))
 	}
 

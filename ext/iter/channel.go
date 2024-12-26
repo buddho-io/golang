@@ -17,7 +17,7 @@ package iter
 import (
 	"iter"
 
-	"github.com/llinder/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang"
 )
 
 // Channel returns a sequence that yields values from a channel.

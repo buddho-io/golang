@@ -17,7 +17,7 @@ package option
 import (
 	"reflect"
 
-	"github.com/llinder/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang"
 )
 
 // none represents an empty Option.

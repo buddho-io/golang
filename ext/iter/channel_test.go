@@ -19,10 +19,9 @@ import (
 	"slices"
 	"testing"
 
+	"github.com/buddho-io/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang/tuple"
 	"github.com/stretchr/testify/require"
-
-	"github.com/llinder/golang/ext/lang"
-	"github.com/llinder/golang/ext/lang/tuple"
 )
 
 func TestChannel(t *testing.T) {
@@ -36,12 +35,7 @@ func TestChannel(t *testing.T) {
 		close(ch)
 	}()
 
-	m := Channel(ch)
-
-	var got []int //nolint:prealloc
-	for x := range m {
-		got = append(got, x)
-	}
+	got := slices.Collect(Channel(ch))
 
 	want := []int{1, 2, 3}
 
@@ -80,9 +74,7 @@ func TestChannel2(t *testing.T) {
 		close(ch)
 	}()
 
-	m := Channel2(ch)
-
-	got := maps.Collect(m)
+	got := maps.Collect(Channel2(ch))
 
 	want := map[int]string{1: "one", 2: "two", 3: "three"}
 	require.Equal(t, want, got)

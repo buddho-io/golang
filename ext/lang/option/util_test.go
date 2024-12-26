@@ -15,14 +15,12 @@
 package option
 
 import (
-	"iter"
-	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/llinder/golang/ext/lang"
-	"github.com/llinder/golang/ext/lang/either"
+	"github.com/buddho-io/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang/either"
 )
 
 func TestMap(t *testing.T) {
@@ -117,9 +115,9 @@ func TestSequence(t *testing.T) {
 		Some(4),
 	}
 
-	no := Sequence(slices.Values(n))
+	no := Sequence(n)
 
-	expect := None[iter.Seq[int]]()
+	expect := None[[]int]()
 
 	require.True(t, no.IsEmpty())
 	require.Equal(t, expect, no)
@@ -130,10 +128,10 @@ func TestSequence(t *testing.T) {
 		Some(3),
 	}
 
-	no = Sequence(slices.Values(s))
+	no = Sequence(s)
 
 	expectS := []int{1, 2, 3}
 
 	require.True(t, no.IsDefined())
-	require.Equal(t, expectS, slices.Collect(no.Get()))
+	require.Equal(t, expectS, no.Get())
 }

@@ -21,9 +21,8 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/buddho-io/golang/ext/lang/option"
 	"github.com/stretchr/testify/require"
-
-	"github.com/llinder/golang/ext/lang/option"
 )
 
 func TestMap(t *testing.T) {
