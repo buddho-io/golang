@@ -16,24 +16,22 @@ package iter
 
 import "iter"
 
-// Range returns a sequence of integers from start to end.
-func Range(start, end int) iter.Seq[int] {
-	return func(f func(int) bool) {
-		for i := start; i < end; i++ {
-			if !f(i) {
-				return
-			}
-		}
+// Len returns the number of elements in the sequence. This requires iterating
+// over the entire sequence so it is not efficient for large sequences.
+func Len[T any](seq iter.Seq[T]) int {
+	c := 0
+	for range seq {
+		c++
 	}
+	return c
 }
 
-// Range2 returns a sequence of integers from start to end.
-func Range2(start, end int) iter.Seq2[int, struct{}] {
-	return func(f func(int, struct{}) bool) {
-		for i := start; i < end; i++ {
-			if !f(i, struct{}{}) {
-				return
-			}
-		}
+// Len2 returns the number of elements in the sequence. This requires iterating
+// over the entire sequence so it is not efficient for large sequences.
+func Len2[K, V any](seq iter.Seq2[K, V]) int {
+	c := 0
+	for range seq {
+		c++
 	}
+	return c
 }

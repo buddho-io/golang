@@ -16,24 +16,20 @@ package iter
 
 import "iter"
 
-// Range returns a sequence of integers from start to end.
-func Range(start, end int) iter.Seq[int] {
-	return func(f func(int) bool) {
-		for i := start; i < end; i++ {
-			if !f(i) {
-				return
-			}
+// Concat returns a sequence that concatenates the given sequences.
+func Concat[T any](seq ...iter.Seq[T]) iter.Seq[T] {
+	return func(yield func(T) bool) {
+		for _, s := range seq {
+			s(yield)
 		}
 	}
 }
 
-// Range2 returns a sequence of integers from start to end.
-func Range2(start, end int) iter.Seq2[int, struct{}] {
-	return func(f func(int, struct{}) bool) {
-		for i := start; i < end; i++ {
-			if !f(i, struct{}{}) {
-				return
-			}
+// Concat2 returns a sequence that concatenates the given sequences.
+func Concat2[K, V any](seq ...iter.Seq2[K, V]) iter.Seq2[K, V] {
+	return func(yield func(K, V) bool) {
+		for _, s := range seq {
+			s(yield)
 		}
 	}
 }

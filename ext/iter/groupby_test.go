@@ -14,26 +14,29 @@
 
 package iter
 
-import "iter"
+import (
+	"maps"
+	"testing"
 
-// Range returns a sequence of integers from start to end.
-func Range(start, end int) iter.Seq[int] {
-	return func(f func(int) bool) {
-		for i := start; i < end; i++ {
-			if !f(i) {
-				return
-			}
-		}
-	}
-}
+	"github.com/stretchr/testify/require"
+)
 
-// Range2 returns a sequence of integers from start to end.
-func Range2(start, end int) iter.Seq2[int, struct{}] {
-	return func(f func(int, struct{}) bool) {
-		for i := start; i < end; i++ {
-			if !f(i, struct{}{}) {
-				return
-			}
+func TestGroupBy(t *testing.T) {
+	// Given
+	seq := Range(1, 10)
+
+	// When
+	s := GroupBy(seq, func(i int) string {
+		if i%2 == 0 {
+			return "even"
 		}
-	}
+		return "odd"
+	})
+
+	// Then
+	r := maps.Collect(s)
+
+	require.Len(t, r, 2)
+	require.Equal(t, 4, Len(r["even"]))
+	require.Equal(t, 5, Len(r["odd"]))
 }

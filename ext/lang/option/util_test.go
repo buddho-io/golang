@@ -17,10 +17,9 @@ package option
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/buddho-io/golang/ext/lang"
 	"github.com/buddho-io/golang/ext/lang/either"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMap(t *testing.T) {

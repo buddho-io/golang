@@ -14,26 +14,40 @@
 
 package iter
 
-import "iter"
+import (
+	"maps"
+	"slices"
+	"testing"
 
-// Range returns a sequence of integers from start to end.
-func Range(start, end int) iter.Seq[int] {
-	return func(f func(int) bool) {
-		for i := start; i < end; i++ {
-			if !f(i) {
-				return
-			}
-		}
-	}
+	"github.com/stretchr/testify/require"
+)
+
+func TestConcat(t *testing.T) {
+	// Given
+	seq1 := Range(1, 4)
+	seq2 := Range(4, 7)
+	seq3 := Range(7, 10)
+
+	// When
+	s := Concat(seq1, seq2, seq3)
+
+	// Then
+	r := slices.Collect(s)
+
+	require.Len(t, r, 9)
 }
 
-// Range2 returns a sequence of integers from start to end.
-func Range2(start, end int) iter.Seq2[int, struct{}] {
-	return func(f func(int, struct{}) bool) {
-		for i := start; i < end; i++ {
-			if !f(i, struct{}{}) {
-				return
-			}
-		}
-	}
+func TestConcat2(t *testing.T) {
+	// Given
+	seq1 := Range2(1, 4)
+	seq2 := Range2(4, 7)
+	seq3 := Range2(7, 10)
+
+	// When
+	s := Concat2(seq1, seq2, seq3)
+
+	// Then
+	r := maps.Collect(s)
+
+	require.Len(t, r, 9)
 }
