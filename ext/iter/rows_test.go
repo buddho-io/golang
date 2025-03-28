@@ -16,14 +16,15 @@ package iter
 
 import (
 	"errors"
-	"github.com/buddho-io/golang/ext/lang"
-	"github.com/buddho-io/golang/ext/lang/either"
-	"github.com/stretchr/testify/require"
 	"io"
 	"maps"
 	"slices"
 	"sync"
 	"testing"
+
+	"github.com/buddho-io/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang/either"
+	"github.com/stretchr/testify/require"
 )
 
 func TestEmptyRows(t *testing.T) {
@@ -39,7 +40,7 @@ func TestSingleRows(t *testing.T) {
 }
 
 func TestRowsScanError(t *testing.T) {
-	single := Rows[int](&mockRows[int]{values: []int{42}}, func(f func(dest ...any) error) (int, error) {
+	single := Rows[int](&mockRows[int]{values: []int{42}}, func(_ func(...any) error) (int, error) {
 		return 0, errors.New("scan error")
 	})
 	var result lang.Either[error, int]
@@ -74,7 +75,7 @@ func TestSingleRows2(t *testing.T) {
 }
 
 func TestRowsScanError2(t *testing.T) {
-	single := Rows2[int](&mockRows[int]{values: []int{42}}, func(f func(dest ...any) error) (int, error) {
+	single := Rows2[int](&mockRows[int]{values: []int{42}}, func(_ func(...any) error) (int, error) {
 		return 0, errors.New("scan error")
 	})
 	var result map[int]error

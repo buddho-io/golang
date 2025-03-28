@@ -16,10 +16,11 @@ package iter
 
 import (
 	"errors"
-	"github.com/buddho-io/golang/ext/lang"
-	"github.com/buddho-io/golang/ext/lang/either"
 	"io"
 	"iter"
+
+	"github.com/buddho-io/golang/ext/lang"
+	"github.com/buddho-io/golang/ext/lang/either"
 )
 
 // Rows returns a sequence of values from a database RowsLike instance. If an error occurs reading the row
