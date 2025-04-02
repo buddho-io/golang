@@ -18,10 +18,10 @@ import "iter"
 
 // Flatten returns a new Seq that will yield elements from the nested input Seq.
 func Flatten[T any](s iter.Seq[iter.Seq[T]]) iter.Seq[T] {
-	return func(g func(T) bool) {
+	return func(yield func(T) bool) {
 		s(func(a iter.Seq[T]) bool {
 			a(func(b T) bool {
-				return g(b)
+				return yield(b)
 			})
 			return true
 		})

@@ -18,18 +18,18 @@ import "iter"
 
 // Map applies a function to each element of a sequence and returns a new sequence with the results.
 func Map[A, B any](s iter.Seq[A], f func(A) B) iter.Seq[B] {
-	return func(g func(B) bool) {
+	return func(yield func(B) bool) {
 		s(func(a A) bool {
-			return g(f(a))
+			return yield(f(a))
 		})
 	}
 }
 
 // Map2 applies a function to each element of a sequence and returns a new sequence with the results.
 func Map2[A, B, A1, B1 any](s iter.Seq2[A, B], f func(A, B) (A1, B1)) iter.Seq2[A1, B1] {
-	return func(g func(A1, B1) bool) {
+	return func(yield func(A1, B1) bool) {
 		s(func(a A, b B) bool {
-			return g(f(a, b))
+			return yield(f(a, b))
 		})
 	}
 }

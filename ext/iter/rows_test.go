@@ -99,6 +99,7 @@ func TestRowsClose2(t *testing.T) {
 
 type mockRows[T any] struct {
 	values []T
+	err    error
 
 	mu     sync.Mutex
 	index  int
@@ -124,14 +125,7 @@ func (m *mockRows[T]) Close() {
 }
 
 func (m *mockRows[T]) Err() error {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-
-	if m.index >= len(m.values) {
-		return io.EOF
-	}
-
-	return nil
+	return m.err
 }
 
 func (m *mockRows[T]) Scan(dest ...any) error {

@@ -27,21 +27,21 @@ import (
 // If the StreamLike returns an error, the iter.Seq will return an either.Left with that error.
 // Otherwise, the iter.Seq will return an either.Right with the value.
 func Stream[T any](stream StreamLike[T]) iter.Seq[lang.Either[error, T]] {
-	return func(f func(lang.Either[error, T]) bool) {
+	return func(yield func(lang.Either[error, T]) bool) {
 		for {
 			v, err := stream.Recv()
 			if errors.Is(err, io.EOF) {
 				return
 			}
 			if err != nil {
-				if !f(either.Left[error, T](err)) {
+				if !yield(either.Left[error, T](err)) {
 					return
 				}
 
 				continue
 			}
 
-			if !f(either.Right[error, T](v)) {
+			if !yield(either.Right[error, T](v)) {
 				return
 			}
 		}
@@ -51,21 +51,21 @@ func Stream[T any](stream StreamLike[T]) iter.Seq[lang.Either[error, T]] {
 // Stream2 converts a StreamLike into an iter.Seq2 that can be used with the iter package.
 // If the StreamLike returns an error, the iter.Seq2 will return that error.
 func Stream2[T any](stream StreamLike[T]) iter.Seq2[T, error] {
-	return func(f func(T, error) bool) {
+	return func(yield func(T, error) bool) {
 		for {
 			v, err := stream.Recv()
 			if errors.Is(err, io.EOF) {
 				return
 			}
 			if err != nil {
-				if !f(v, err) {
+				if !yield(v, err) {
 					return
 				}
 
 				continue
 			}
 
-			if !f(v, nil) {
+			if !yield(v, nil) {
 				return
 			}
 		}

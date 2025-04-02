@@ -15,8 +15,6 @@
 package iter
 
 import (
-	"errors"
-	"io"
 	"iter"
 
 	"github.com/buddho-io/golang/ext/lang"
@@ -26,30 +24,26 @@ import (
 // Rows returns a sequence of values from a database RowsLike instance. If an error occurs reading the row
 // it is returned as a Left value in the sequence. If the row is read successfully, the value is returned as a Right value.
 func Rows[T any](rows RowLike, scanner Scanner[T]) iter.Seq[lang.Either[error, T]] {
-	return func(f func(lang.Either[error, T]) bool) {
+	return func(yield func(lang.Either[error, T]) bool) {
 		defer rows.Close()
 
 		for rows.Next() {
-			if err := rows.Err(); err != nil {
-				if errors.Is(err, io.EOF) {
-					return
-				}
-
-				if !f(either.Left[error, T](err)) {
-					return
-				}
-			}
-
 			v, err := scanner(rows.Scan)
 			if err != nil {
-				if !f(either.Left[error, T](err)) {
+				if !yield(either.Left[error, T](err)) {
 					return
 				}
-			} else {
-				if !f(either.Right[error, T](v)) {
-					return
-				}
+				continue
 			}
+
+			if !yield(either.Right[error, T](v)) {
+				return
+			}
+		}
+
+		// Check for any errors encountered during iteration and yield if present
+		if err := rows.Err(); err != nil {
+			yield(either.Left[error, T](err))
 		}
 	}
 }
@@ -61,26 +55,22 @@ func Rows2[T any](rows RowLike, scanner Scanner[T]) iter.Seq2[T, error] {
 		defer rows.Close()
 
 		for rows.Next() {
-			if err := rows.Err(); err != nil {
-				if errors.Is(err, io.EOF) {
-					return
-				}
-
-				if !f(lang.Zero[T](), err) {
-					return
-				}
-			}
-
 			v, err := scanner(rows.Scan)
 			if err != nil {
 				if !f(lang.Zero[T](), err) {
 					return
 				}
-			} else {
-				if !f(v, nil) {
-					return
-				}
+				continue
 			}
+
+			if !f(v, nil) {
+				return
+			}
+		}
+
+		// Check for any errors encountered during iteration and yield if present
+		if err := rows.Err(); err != nil {
+			f(lang.Zero[T](), err)
 		}
 	}
 }

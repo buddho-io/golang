@@ -18,9 +18,9 @@ import "iter"
 
 // Range returns a sequence of integers from start to end.
 func Range(start, end int) iter.Seq[int] {
-	return func(f func(int) bool) {
+	return func(yield func(int) bool) {
 		for i := start; i < end; i++ {
-			if !f(i) {
+			if !yield(i) {
 				return
 			}
 		}
@@ -29,9 +29,9 @@ func Range(start, end int) iter.Seq[int] {
 
 // Range2 returns a sequence of integers from start to end.
 func Range2(start, end int) iter.Seq2[int, struct{}] {
-	return func(f func(int, struct{}) bool) {
+	return func(yield func(int, struct{}) bool) {
 		for i := start; i < end; i++ {
-			if !f(i, struct{}{}) {
+			if !yield(i, struct{}{}) {
 				return
 			}
 		}
